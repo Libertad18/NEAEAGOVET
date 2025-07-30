@@ -227,65 +227,20 @@
             </p>
         </div>
 
-        <!-- Result Checker Section (hidden initially) -->
-        <div id="result-checker-section" class="hidden">
-            <h2 class="text-3xl">Step 2: Check Your Result</h2>
-            <p class="text-gray-600 mb-6">Enter your admission card number and first name.</p>
-
-            <div class="input-group">
-                <label for="registration-number">Registration Number:</label>
-                <input type="text" id="registration-number" placeholder="e.g., 123456789">
-            </div>
-            <div class="input-group">
-                <label for="first-name">First Name:</label>
-                <input type="text" id="first-name" placeholder="e.g., John">
-            </div>
-            <button id="check-result-btn" class="btn w-full">Check Result</button>
-
-            <div class="loading-spinner" id="loading-spinner"></div>
-
-            <div id="results-display" class="hidden">
-                <h3 class="text-2xl">Student Results</h3>
-                <p class="mb-4"><strong>Name:</strong> <span id="student-name" class="font-semibold text-blue-700"></span></p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Grade</th>
-                        </tr>
-                    </thead>
-                    <tbody id="grades-table-body">
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="disclaimer">
-                <p class="font-bold">Important Disclaimer:</p>
-                <p>This application attempts to connect to a backend server to fetch results from `https://result.neaea.gov.et/`.</p>
-                <p class="mt-2">For this to work, you **must have a running backend server** (like the Python Flask example provided in `neaea-backend-code`) that is publicly accessible and configured to scrape the NEAEA website. Direct fetching from the browser is not possible due to security policies (CORS).</p>
-                <p class="mt-2 text-red-700 font-bold">Please ensure your backend server is running and its URL is correctly set in the JavaScript code below.</p>
-            </div>
+        <!-- Result Checker Section (Removed - now direct redirect) -->
+        
+        <div class="disclaimer">
+            <p class="font-bold">Important Disclaimer:</p>
+            <p>This application will redirect you to the official `https://result.neaea.gov.et/` website.</p>
+            <p class="mt-2">This is done because direct fetching of results within this app is not possible due to browser security policies (CORS) and website anti-scraping measures.</p>
         </div>
     </div>
 
     <script>
         const channelJoinSection = document.getElementById('channel-join-section');
         const joinedChannelBtn = document.getElementById('joined-channel-btn');
-        const resultCheckerSection = document.getElementById('result-checker-section');
-
-        const registrationNumberInput = document.getElementById('registration-number');
-        const firstNameInput = document.getElementById('first-name');
-        const checkResultBtn = document.getElementById('check-result-btn');
         const messageBox = document.getElementById('message-box');
-        const resultsDisplay = document.getElementById('results-display');
-        const studentNameSpan = document.getElementById('student-name');
-        const gradesTableBody = document.getElementById('grades-table-body');
-        const loadingSpinner = document.getElementById('loading-spinner');
 
-        // IMPORTANT: Replace this with the actual URL of your deployed Python backend
-        // For local testing, use http://localhost:5001 if your Flask app runs on port 5001.
-        // For a deployed backend, it will be an HTTPS URL (e.g., https://your-backend-app.cloudrun.app)
-        const BACKEND_URL = "http://localhost:5001"; 
         const NEAEA_OFFICIAL_URL = "https://result.neaea.gov.et/";
 
         function showMessage(message, type = 'info') {
@@ -299,73 +254,16 @@
 
         // Event listener for "I have joined the channel" button
         joinedChannelBtn.addEventListener('click', () => {
-            channelJoinSection.classList.add('hidden');
-            resultCheckerSection.classList.remove('hidden');
-            showMessage('You can now check your results!', 'success');
-        });
-
-        checkResultBtn.addEventListener('click', async () => {
-            const registrationNumber = registrationNumberInput.value.trim();
-            const firstName = firstNameInput.value.trim(); 
-
-            if (!registrationNumber) {
-                showMessage('Please enter your Registration Number.', 'error');
-                return;
-            }
-
-            // Instead of fetching from backend to display results in-app,
-            // we will now redirect to the official NEAEA site as requested.
-            // If you later want to display results *within* your app, you'd uncomment
-            // the fetch logic and remove the redirection.
-
-            // Option 1: Redirect to NEAEA official site (as requested in the prompt)
-            window.open(NEAEA_OFFICIAL_URL, '_blank');
-            showMessage('Redirecting you to the official NEAEA result page. Please check your result there.', 'info');
+            channelJoinSection.classList.add('hidden'); // Hide the channel join section
+            window.open(NEAEA_OFFICIAL_URL, '_blank'); // Redirect to NEAEA official site
+            showMessage('Redirecting you to the official NEAEA result page. Please check your result there.', 'success');
             
-            // --- Option 2: (If you want to fetch and display results IN THIS APP, requires backend) ---
-            /*
-            resultsDisplay.classList.add('hidden'); // Hide previous results
-            loadingSpinner.style.display = 'block'; // Show spinner
-            showMessage('Fetching results from NEAEA via backend...', 'info');
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/get-grade12-result`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        registrationNumber: registrationNumber,
-                        firstName: firstName 
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    studentNameSpan.textContent = result.studentName || 'N/A';
-                    gradesTableBody.innerHTML = ''; 
-
-                    if (result.grades && result.grades.length > 0) {
-                        result.grades.forEach(item => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `<td>${item.subject}</td><td>${item.grade}</td>`;
-                            gradesTableBody.appendChild(row);
-                        });
-                        resultsDisplay.classList.remove('hidden');
-                        showMessage('Results found!', 'success');
-                    } else {
-                        showMessage('No grades found for this registration number. It might be incorrect or results are not yet available.', 'info');
-                    }
-                } else {
-                    showMessage(`Error: ${result.message}`, 'error');
-                }
-            } catch (error) {
-                console.error("Frontend fetch error:", error);
-                showMessage(`Failed to connect to the result server. Please ensure your backend is running and accessible, then try again.`, 'error');
-            } finally {
-                loadingSpinner.style.display = 'none'; // Hide spinner
-            }
-            */
-            // --- End Option 2 ---
+            // Optionally, you might want to show a small message on the page
+            // after redirection, indicating what happened.
+            const redirectMessageDiv = document.createElement('div');
+            redirectMessageDiv.className = 'message-box success-message mt-8';
+            redirectMessageDiv.textContent = 'You have been redirected to the official NEAEA result page.';
+            document.querySelector('.container').appendChild(redirectMessageDiv);
         });
     </script>
 </body>
