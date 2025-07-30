@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bingo Wallet Game</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>Grade 12 Result Checker | EthioAirdropStation</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f4f9;
+      background: linear-gradient(to bottom, #f4f4f9, #e0e7ff);
       margin: 0;
       padding: 2rem;
       display: flex;
@@ -18,169 +17,96 @@
     .container {
       background: white;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.15);
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
     }
     input, button {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 6px;
       border: 1px solid #ccc;
     }
     button {
-      background: #6200ea;
+      background: #0b5ed7;
       color: white;
       font-weight: bold;
       cursor: pointer;
     }
     button:hover {
-      background: #3700b3;
+      background: #06357a;
     }
     h2 {
       text-align: center;
+      color: #0b5ed7;
     }
     .hidden {
       display: none;
     }
-    .game-section {
-      text-align: center;
-      margin-top: 20px;
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    a {
+      color: #0b5ed7;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Bingo Wallet Game</h2>
-
-    <div id="join-section">
-      <p>🚀 To continue, please join our Telegram channel:</p>
-      <a href="https://t.me/EthioAirdropStatione" target="_blank">
-        👉 Join @EthioAirdropStation
-      </a>
-      <button onclick="checkJoin()">✅ I Have Joined</button>
+    <h2>Grade 12 Result Checker</h2>
+    <div id="login-section">
+      <input type="text" id="studentId" placeholder="Student ID (e.g., 1234567890)" required />
+      <input type="text" id="token" placeholder="Access Token" required />
+      <button onclick="checkResult()">Check Result</button>
     </div>
 
-    <div id="login-section" class="hidden">
-      <input type="text" id="phone" placeholder="Phone Number" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button onclick="login()">Login / Register</button>
-    </div>
-
-    <div id="wallet-section" class="hidden">
-      <p>Welcome, <span id="userPhone"></span></p>
-      <p>Balance: <span id="balance">0</span> birr</p>
-
-      <input type="number" id="depositAmount" placeholder="Amount to deposit" />
-      <input type="password" id="depositPass" placeholder="Password to confirm" />
-      <button onclick="deposit()">Deposit</button>
-
-      <input type="number" id="withdrawAmount" placeholder="Amount to withdraw" />
-      <input type="password" id="withdrawPass" placeholder="Password to confirm" />
-      <button onclick="withdraw()">Withdraw</button>
-
-      <div class="game-section">
-        <button onclick="playGame()">🎯 Play Bingo (Cost: 10 birr)</button>
-        <p id="game-result"></p>
-      </div>
+    <div id="result-section" class="hidden">
+      <p><strong>Student ID:</strong> <span id="resStudentId"></span></p>
+      <p><strong>Full Name:</strong> <span id="resName"></span></p>
+      <p><strong>Stream:</strong> <span id="resStream"></span></p>
+      <p><strong>Score:</strong> <span id="resScore"></span></p>
+      <p><strong>Status:</strong> <span id="resStatus"></span></p>
+      <button onclick="resetForm()">🔁 Check Another</button>
     </div>
   </div>
 
+  <div class="footer">
+    Powered by <a href="https://t.me/EthioAirdropStation" target="_blank">@EthioAirdropStation</a>
+  </div>
+
   <script>
-    const users = {};
-    let currentUser = null;
+    function checkResult() {
+      const id = document.getElementById('studentId').value;
+      const token = document.getElementById('token').value;
 
-    async function checkJoin() {
-      const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
+      // Simulated result checker - Replace with real API integration
+      if (id === "1234567890" && token === "abcdef") {
+        document.getElementById('resStudentId').textContent = id;
+        document.getElementById('resName').textContent = "Libertad Yared";
+        document.getElementById('resStream').textContent = "Natural Science";
+        document.getElementById('resScore').textContent = "465 / 700";
+        document.getElementById('resStatus').textContent = "✅ Passed";
 
-      if (!tgUser) {
-        alert("Please open in Telegram Mini App.");
-        return;
-      }
-
-      // Simulated channel join check (real check must be server-side using getChatMember)
-      const joined = confirm("Have you joined @YourChannelUsername?");
-
-      if (joined) {
-        document.getElementById('join-section').classList.add('hidden');
-        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('result-section').classList.remove('hidden');
       } else {
-        alert("Please join the channel to continue.");
+        alert("Result not found. Please check your ID and token.");
       }
     }
 
-    function login() {
-      const phone = document.getElementById('phone').value;
-      const pass = document.getElementById('password').value;
-      if (!users[phone]) {
-        users[phone] = { password: pass, balance: 10 };
-      }
-      if (users[phone].password === pass) {
-        currentUser = phone;
-        updateUI();
-      } else {
-        alert('Incorrect password');
-      }
-    }
-
-    function updateUI() {
-      document.getElementById('userPhone').textContent = currentUser;
-      document.getElementById('balance').textContent = users[currentUser].balance.toFixed(2);
-      document.getElementById('login-section').classList.add('hidden');
-      document.getElementById('wallet-section').classList.remove('hidden');
-    }
-
-    function deposit() {
-      const amount = parseFloat(document.getElementById('depositAmount').value);
-      const pass = document.getElementById('depositPass').value;
-      if (isNaN(amount) || amount <= 0) return alert('Invalid amount');
-      if (users[currentUser].password === pass) {
-        users[currentUser].balance += amount;
-        updateUI();
-        alert('Deposit successful');
-      } else {
-        alert('Wrong password');
-      }
-    }
-
-    function withdraw() {
-      const amount = parseFloat(document.getElementById('withdrawAmount').value);
-      const pass = document.getElementById('withdrawPass').value;
-      if (isNaN(amount) || amount <= 0) return alert('Invalid amount');
-      if (users[currentUser].password === pass) {
-        if (amount > users[currentUser].balance) {
-          alert('Insufficient balance');
-        } else {
-          users[currentUser].balance -= amount;
-          updateUI();
-          alert('Withdrawal successful');
-        }
-      } else {
-        alert('Wrong password');
-      }
-    }
-
-    function playGame() {
-      const cost = 10;
-      const resultText = document.getElementById('game-result');
-      if (users[currentUser].balance < cost) {
-        resultText.textContent = "Not enough balance. Please deposit to play.";
-        return;
-      }
-
-      users[currentUser].balance -= cost;
-      updateUI();
-
-      const win = Math.random() < 0.5; // 50% win chance
-      if (win) {
-        const prize = 18; // Winner gets 90% of total
-        users[currentUser].balance += prize;
-        resultText.textContent = `🎉 You won! Prize: ${prize} birr`;
-      } else {
-        resultText.textContent = "😢 You lost. Better luck next time!";
-      }
+    function resetForm() {
+      document.getElementById('login-section').classList.remove('hidden');
+      document.getElementById('result-section').classList.add('hidden');
+      document.getElementById('studentId').value = "";
+      document.getElementById('token').value = "";
     }
   </script>
 </body>
