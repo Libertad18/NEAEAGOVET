@@ -1,113 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grade 12 Result Checker | EthioAirdropStation</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #f4f4f9, #e0e7ff);
-      margin: 0;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.15);
-      width: 100%;
-      max-width: 450px;
-    }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 12px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #0b5ed7;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #06357a;
-    }
-    h2 {
-      text-align: center;
-      color: #0b5ed7;
-    }
-    .hidden {
-      display: none;
-    }
-    .footer {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
-    a {
-      color: #0b5ed7;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 12 Result Checker</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #004d99 100%); /* Deep blue gradient */
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            box-sizing: border-box;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            color: #004d99;
+            font-weight: 800;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #333;
+        }
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 12px 18px;
+            border: 2px solid #a0c4ff;
+            border-radius: 10px;
+            font-size: 17px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .input-group input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-align: center;
+            font-size: 17px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, #28a745, #1e7e34); /* Green gradient */
+            color: #ffffff;
+        }
+        .btn:hover {
+            background: linear-gradient(45deg, #1e7e34, #28a745);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .btn-telegram {
+            background: linear-gradient(45deg, #0088cc, #005f99); /* Telegram blue gradient */
+            color: #ffffff;
+        }
+        .btn-telegram:hover {
+            background: linear-gradient(45deg, #005f99, #0088cc);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .message-box {
+            background-color: #e0f7fa;
+            border: 1px solid #00bcd4;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 25px;
+            text-align: center;
+            font-weight: 600;
+            color: #006064;
+            box-shadow: inset 0 0 8px rgba(0, 188, 212, 0.2);
+        }
+        .error-message {
+            background-color: #ffebee;
+            border: 1px solid #f44336;
+            color: #d32f2f;
+            box-shadow: inset 0 0 8px rgba(244, 67, 54, 0.2);
+        }
+        .success-message {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
+            box-shadow: inset 0 0 8px rgba(76, 175, 80, 0.2);
+        }
+        #results-display {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 15px;
+            border: 1px solid #cce7ff;
+            text-align: left;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.7s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #results-display h3 {
+            color: #004d99;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        #results-display table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        #results-display th, #results-display td {
+            border: 1px solid #b3d9ff;
+            padding: 10px;
+            text-align: left;
+        }
+        #results-display th {
+            background-color: #e6f7ff;
+            font-weight: 600;
+            color: #0056b3;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: #e65100;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(255, 204, 128, 0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
+            .btn {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+            .input-group input {
+                font-size: 15px;
+            }
+            #results-display th, #results-display td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Grade 12 Result Checker</h2>
-    <div id="login-section">
-      <input type="text" id="studentId" placeholder="Student ID (e.g., 1234567890)" required />
-      <input type="text" id="token" placeholder="Access Token" required />
-      <button onclick="checkResult()">Check Result</button>
+    <div class="container">
+        <h1 class="text-4xl">🎓 Ethiopian Grade 12 Result Checker 🎓</h1>
+        <p class="text-gray-600 mb-6">For 2017 Exam Results</p>
+
+        <div id="message-box" class="message-box hidden"></div>
+
+        <!-- Channel Join Section -->
+        <div id="channel-join-section">
+            <h2 class="text-3xl">Step 1: Join Our Telegram Channel</h2>
+            <p class="text-gray-700 mb-6">To access the result checker, please join our official Telegram channel:</p>
+            <a href="https://t.me/EthioAirdropStation" target="_blank" class="btn btn-telegram w-full mb-6">
+                🚀 Join @EthioAirdropStation
+            </a>
+            <button id="joined-channel-btn" class="btn w-full">✅ I have joined the channel</button>
+            <p class="text-sm text-gray-500 mt-4">
+                (Note: Channel join verification is simulated. Please actually join the channel to support us!)
+            </p>
+        </div>
+
+        <!-- Result Checker Section (hidden initially) -->
+        <div id="result-checker-section" class="hidden">
+            <h2 class="text-3xl">Step 2: Check Your Result</h2>
+            <p class="text-gray-600 mb-6">Enter your admission card number and first name.</p>
+
+            <div class="input-group">
+                <label for="registration-number">Registration Number:</label>
+                <input type="text" id="registration-number" placeholder="e.g., 123456789">
+            </div>
+            <div class="input-group">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" placeholder="e.g., John">
+            </div>
+            <button id="check-result-btn" class="btn w-full">Check Result</button>
+
+            <div class="loading-spinner" id="loading-spinner"></div>
+
+            <div id="results-display" class="hidden">
+                <h3 class="text-2xl">Student Results</h3>
+                <p class="mb-4"><strong>Name:</strong> <span id="student-name" class="font-semibold text-blue-700"></span></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grades-table-body">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="disclaimer">
+                <p class="font-bold">Important Disclaimer:</p>
+                <p>This application attempts to connect to a backend server to fetch results from `https://result.neaea.gov.et/`.</p>
+                <p class="mt-2">For this to work, you **must have a running backend server** (like the Python Flask example provided in `neaea-backend-code`) that is publicly accessible and configured to scrape the NEAEA website. Direct fetching from the browser is not possible due to security policies (CORS).</p>
+                <p class="mt-2 text-red-700 font-bold">Please ensure your backend server is running and its URL is correctly set in the JavaScript code below.</p>
+            </div>
+        </div>
     </div>
 
-    <div id="result-section" class="hidden">
-      <p><strong>Student ID:</strong> <span id="resStudentId"></span></p>
-      <p><strong>Full Name:</strong> <span id="resName"></span></p>
-      <p><strong>Stream:</strong> <span id="resStream"></span></p>
-      <p><strong>Score:</strong> <span id="resScore"></span></p>
-      <p><strong>Status:</strong> <span id="resStatus"></span></p>
-      <button onclick="resetForm()">🔁 Check Another</button>
-    </div>
-  </div>
+    <script>
+        const channelJoinSection = document.getElementById('channel-join-section');
+        const joinedChannelBtn = document.getElementById('joined-channel-btn');
+        const resultCheckerSection = document.getElementById('result-checker-section');
 
-  <div class="footer">
-    Powered by <a href="https://t.me/EthioAirdropStation" target="_blank">@EthioAirdropStation</a>
-  </div>
+        const registrationNumberInput = document.getElementById('registration-number');
+        const firstNameInput = document.getElementById('first-name');
+        const checkResultBtn = document.getElementById('check-result-btn');
+        const messageBox = document.getElementById('message-box');
+        const resultsDisplay = document.getElementById('results-display');
+        const studentNameSpan = document.getElementById('student-name');
+        const gradesTableBody = document.getElementById('grades-table-body');
+        const loadingSpinner = document.getElementById('loading-spinner');
 
-  <script>
-    function checkResult() {
-      const id = document.getElementById('studentId').value;
-      const token = document.getElementById('token').value;
+        // IMPORTANT: Replace this with the actual URL of your deployed Python backend
+        // For local testing, use http://localhost:5001 if your Flask app runs on port 5001.
+        // For a deployed backend, it will be an HTTPS URL (e.g., https://your-backend-app.cloudrun.app)
+        const BACKEND_URL = "http://localhost:5001"; 
+        const NEAEA_OFFICIAL_URL = "https://result.neaea.gov.et/";
 
-      // Simulated result checker - Replace with real API integration
-      if (id === "1234567890" && token === "abcdef") {
-        document.getElementById('resStudentId').textContent = id;
-        document.getElementById('resName').textContent = "Libertad Yared";
-        document.getElementById('resStream').textContent = "Natural Science";
-        document.getElementById('resScore').textContent = "465 / 700";
-        document.getElementById('resStatus').textContent = "✅ Passed";
+        function showMessage(message, type = 'info') {
+            messageBox.textContent = message;
+            messageBox.className = `message-box ${type}-message`;
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 5000);
+        }
 
-        document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('result-section').classList.remove('hidden');
-      } else {
-        alert("Result not found. Please check your ID and token.");
-      }
-    }
+        // Event listener for "I have joined the channel" button
+        joinedChannelBtn.addEventListener('click', () => {
+            channelJoinSection.classList.add('hidden');
+            resultCheckerSection.classList.remove('hidden');
+            showMessage('You can now check your results!', 'success');
+        });
 
-    function resetForm() {
-      document.getElementById('login-section').classList.remove('hidden');
-      document.getElementById('result-section').classList.add('hidden');
-      document.getElementById('studentId').value = "";
-      document.getElementById('token').value = "";
-    }
-  </script>
+        checkResultBtn.addEventListener('click', async () => {
+            const registrationNumber = registrationNumberInput.value.trim();
+            const firstName = firstNameInput.value.trim(); 
+
+            if (!registrationNumber) {
+                showMessage('Please enter your Registration Number.', 'error');
+                return;
+            }
+
+            // Instead of fetching from backend to display results in-app,
+            // we will now redirect to the official NEAEA site as requested.
+            // If you later want to display results *within* your app, you'd uncomment
+            // the fetch logic and remove the redirection.
+
+            // Option 1: Redirect to NEAEA official site (as requested in the prompt)
+            window.open(NEAEA_OFFICIAL_URL, '_blank');
+            showMessage('Redirecting you to the official NEAEA result page. Please check your result there.', 'info');
+            
+            // --- Option 2: (If you want to fetch and display results IN THIS APP, requires backend) ---
+            /*
+            resultsDisplay.classList.add('hidden'); // Hide previous results
+            loadingSpinner.style.display = 'block'; // Show spinner
+            showMessage('Fetching results from NEAEA via backend...', 'info');
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/get-grade12-result`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        registrationNumber: registrationNumber,
+                        firstName: firstName 
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    studentNameSpan.textContent = result.studentName || 'N/A';
+                    gradesTableBody.innerHTML = ''; 
+
+                    if (result.grades && result.grades.length > 0) {
+                        result.grades.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `<td>${item.subject}</td><td>${item.grade}</td>`;
+                            gradesTableBody.appendChild(row);
+                        });
+                        resultsDisplay.classList.remove('hidden');
+                        showMessage('Results found!', 'success');
+                    } else {
+                        showMessage('No grades found for this registration number. It might be incorrect or results are not yet available.', 'info');
+                    }
+                } else {
+                    showMessage(`Error: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                console.error("Frontend fetch error:", error);
+                showMessage(`Failed to connect to the result server. Please ensure your backend is running and accessible, then try again.`, 'error');
+            } finally {
+                loadingSpinner.style.display = 'none'; // Hide spinner
+            }
+            */
+            // --- End Option 2 ---
+        });
+    </script>
 </body>
 </html>
