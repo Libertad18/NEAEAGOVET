@@ -254,9 +254,14 @@
 
         // Event listener for "I have joined the channel" button
         joinedChannelBtn.addEventListener('click', () => {
-            channelJoinSection.classList.add('hidden'); // Hide the channel join section
-            window.open(NEAEA_OFFICIAL_URL, '_blank'); // Redirect to NEAEA official site
+            // Directly redirect to NEAEA official site
+            window.open(NEAEA_OFFICIAL_URL, '_blank'); 
+            
+            // Show a message on the current page to inform the user about the redirection
             showMessage('Redirecting you to the official NEAEA result page. Please check your result there.', 'success');
+            
+            // Hide the channel join section after redirecting
+            channelJoinSection.classList.add('hidden');
             
             // Optionally, you might want to show a small message on the page
             // after redirection, indicating what happened.
